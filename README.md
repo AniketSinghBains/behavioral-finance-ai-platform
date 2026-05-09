@@ -170,7 +170,8 @@ Deployed App: <https://behavioral-finance-ai-platform-ama92keuw5bogg66hy3xeu.str
 
 
 ### Investment Behavior Engine
-<img width="1912" height="971" alt="image" src="https://github.com/user-attachments/assets/5c56c47b-812c-4bb7-b208-e6ce936c99fc" />
+<img width="1917" height="967" alt="image" src="https://github.com/user-attachments/assets/f8c852c0-2109-4519-b27e-5e0c8252cabf" />
+
 
 
 ### Financial Advisor Chatbot
