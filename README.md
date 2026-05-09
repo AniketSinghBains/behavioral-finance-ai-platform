@@ -1,4 +1,4 @@
-\# AI Behavioral Finance Intelligence Platform
+<img width="1918" height="971" alt="Screenshot 2026-05-09 195917" src="https://github.com/user-attachments/assets/bc74843c-0413-4dd4-a04c-8d91294229f8" />\# AI Behavioral Finance Intelligence Platform
 
 
 
@@ -151,6 +151,30 @@ Purpose: Detect unusual or suspicious transaction behavior.
 \- High-risk users show elevated financial stress and impulse behavior.
 
 \- Anomaly detection identifies unusual high-value risky transactions.
+
+## Live Demo
+
+Deployed App: <https://behavioral-finance-ai-platform-ama92keuw5bogg66hy3xeu.streamlit.app/>
+
+## Screenshots
+
+
+### Executive Overview
+
+<img width="1918" height="971" alt="Screenshot 2026-05-09 195917" src="https://github.com/user-attachments/assets/988e1ea6-4a3a-46b7-ad5a-46122f339cb0" />
+
+
+### Global Markets Tracker
+<img width="1917" height="967" alt="image" src="https://github.com/user-attachments/assets/f0d271df-7f31-4452-9952-83de64e145e3" />
+
+
+### Investment Behavior Engine
+<img width="1912" height="971" alt="image" src="https://github.com/user-attachments/assets/5c56c47b-812c-4bb7-b208-e6ce936c99fc" />
+
+
+### Financial Advisor Chatbot
+<img width="1917" height="966" alt="image" src="https://github.com/user-attachments/assets/da2abef2-57cc-439c-b764-ca0e7012f1c5" />
+
 
 
 
