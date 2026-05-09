@@ -293,10 +293,10 @@ def get_stock_data(ticker, period="6mo"):
     return hist
 
 # ---------------- Tabs ----------------
-
-overview_tab, markets_tab, behavior_tab, ml_tab, anomaly_tab, users_tab = st.tabs([
+overview_tab, markets_tab, investment_tab, behavior_tab, ml_tab, anomaly_tab, users_tab = st.tabs([
     "Executive Overview",
     "Global Markets",
+    "Investment Behavior",
     "Behavioral Insights",
     "ML Risk Engine",
     "Anomaly Detection",
@@ -436,6 +436,97 @@ with markets_tab:
 
         st.subheader("Latest Market Data")
         st.dataframe(stock_data.tail(10), use_container_width=True)
+
+with investment_tab:
+    st.subheader("Investment Behavior Engine")
+
+    investment_txns = filtered_transactions[
+        filtered_transactions["category"] == "Investment"
+    ]
+
+    total_investment = investment_txns["amount"].sum()
+    avg_investment = investment_txns["amount"].mean()
+    investment_users = investment_txns["user_id"].nunique()
+
+    total_spending_all = filtered_transactions["amount"].sum()
+    investment_rate = (total_investment / total_spending_all) * 100 if total_spending_all > 0 else 0
+
+    i1, i2, i3, i4 = st.columns(4)
+
+    with i1:
+        kpi_card("Total Investment", f"₹{total_investment:,.0f}", "Total amount invested")
+
+    with i2:
+        kpi_card("Avg Investment", f"₹{avg_investment:,.0f}", "Average investment transaction")
+
+    with i3:
+        kpi_card("Investing Users", f"{investment_users:,}", "Users who invested")
+
+    with i4:
+        kpi_card("Investment Rate", f"{investment_rate:.2f}%", "Investment as % of spending")
+
+    st.divider()
+
+    st.subheader("Investment by User Segment")
+
+    investment_by_user = investment_txns.groupby("user_id")["amount"].sum().reset_index()
+    investment_by_user.rename(columns={"amount": "total_investment"}, inplace=True)
+
+    segment_investment = filtered_segments.merge(
+        investment_by_user,
+        on="user_id",
+        how="left"
+    )
+
+    segment_investment["total_investment"] = segment_investment["total_investment"].fillna(0)
+
+    segment_investment_summary = segment_investment.groupby("segment").agg({
+        "total_investment": "mean",
+        "impulse_purchase": "mean",
+        "financial_stress_level": "mean"
+    }).reset_index()
+
+    segment_investment_summary.rename(columns={
+        "total_investment": "avg_investment",
+        "impulse_purchase": "avg_impulse_behavior",
+        "financial_stress_level": "avg_stress_level"
+    }, inplace=True)
+
+    st.dataframe(segment_investment_summary, use_container_width=True)
+
+    st.subheader("Segment-wise Investment Behavior")
+
+    fig_inv, ax_inv = plt.subplots(figsize=(10, 5))
+    fig_inv.patch.set_facecolor("#0F172A")
+    ax_inv.set_facecolor("#0F172A")
+
+    segment_investment_summary.set_index("segment")["avg_investment"].plot(
+        kind="bar",
+        ax=ax_inv
+    )
+
+    ax_inv.set_title("Average Investment by Segment", color="white")
+    ax_inv.set_ylabel("Average Investment", color="white")
+    ax_inv.set_xlabel("Segment", color="white")
+    ax_inv.tick_params(colors="white", rotation=30)
+
+    st.pyplot(fig_inv)
+
+    if investment_rate < 10:
+        st.markdown("""
+        <div class="warning-box">
+        <b>Investment Discipline Warning:</b><br>
+        Investment allocation is low compared to total spending. Users may be prioritizing consumption over wealth creation.
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="insight-box">
+        <b>Investment Discipline Insight:</b><br>
+        Users show a healthy investment allocation relative to spending behavior.
+        </div>
+        """, unsafe_allow_html=True)
+
 
 with behavior_tab:
     st.subheader("User Segment Summary")
