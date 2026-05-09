@@ -1,4 +1,5 @@
-<img width="1918" height="971" alt="Screenshot 2026-05-09 195917" src="https://github.com/user-attachments/assets/bc74843c-0413-4dd4-a04c-8d91294229f8" />\# AI Behavioral Finance Intelligence Platform
+<img width="1917" height="966" alt="image" src="https://github.com/user-attachments/assets/854872c3-6ce2-436e-8f04-76f7fdb8a3cb" />
+\# AI Behavioral Finance Intelligence Platform
 
 
 
