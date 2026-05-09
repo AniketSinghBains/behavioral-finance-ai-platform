@@ -3,6 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
 import pickle
+import yfinance as yf
 
 engine = create_engine("sqlite:///behavioral_finance.db")
 
@@ -285,10 +286,17 @@ def generate_recommendation(user):
 
     return recommendations
 
+@st.cache_data(ttl=900)
+def get_stock_data(ticker, period="6mo"):
+    stock = yf.Ticker(ticker)
+    hist = stock.history(period=period)
+    return hist
+
 # ---------------- Tabs ----------------
 
-overview_tab, behavior_tab, ml_tab, anomaly_tab, users_tab = st.tabs([
+overview_tab, markets_tab, behavior_tab, ml_tab, anomaly_tab, users_tab = st.tabs([
     "Executive Overview",
+    "Global Markets",
     "Behavioral Insights",
     "ML Risk Engine",
     "Anomaly Detection",
@@ -366,6 +374,68 @@ with overview_tab:
     }, inplace=True)
 
     st.dataframe(payment_risk, use_container_width=True)
+
+with markets_tab:
+    st.subheader("Global Stock Market Tracker")
+
+    stock_options = {
+        "Apple": "AAPL",
+        "Microsoft": "MSFT",
+        "Nvidia": "NVDA",
+        "Tesla": "TSLA",
+        "Amazon": "AMZN",
+        "Reliance": "RELIANCE.NS",
+        "TCS": "TCS.NS",
+        "Infosys": "INFY.NS",
+        "HDFC Bank": "HDFCBANK.NS",
+        "Nifty 50": "^NSEI",
+        "Sensex": "^BSESN",
+        "S&P 500": "^GSPC",
+        "Nasdaq": "^IXIC"
+    }
+
+    selected_stock_name = st.selectbox(
+        "Select Global Stock / Index",
+        options=list(stock_options.keys())
+    )
+
+    selected_ticker = stock_options[selected_stock_name]
+
+    stock_data = get_stock_data(selected_ticker, period="6mo")
+
+    if stock_data.empty:
+        st.warning("No stock data available. Try another ticker.")
+    else:
+        latest_price = stock_data["Close"].iloc[-1]
+        first_price = stock_data["Close"].iloc[0]
+        return_pct = ((latest_price - first_price) / first_price) * 100
+        volatility = stock_data["Close"].pct_change().std() * 100
+
+        s1, s2, s3 = st.columns(3)
+
+        with s1:
+            kpi_card("Latest Price", f"{latest_price:,.2f}", selected_ticker)
+
+        with s2:
+            kpi_card("6M Return", f"{return_pct:.2f}%", "Price performance")
+
+        with s3:
+            kpi_card("Volatility", f"{volatility:.2f}%", "Daily movement risk")
+
+        st.subheader(f"{selected_stock_name} Price Trend")
+
+        fig_market, ax_market = plt.subplots(figsize=(12, 5))
+        fig_market.patch.set_facecolor("#0F172A")
+        ax_market.set_facecolor("#0F172A")
+        ax_market.plot(stock_data.index, stock_data["Close"])
+        ax_market.set_title(f"{selected_stock_name} Closing Price", color="white")
+        ax_market.set_xlabel("Date", color="white")
+        ax_market.set_ylabel("Close Price", color="white")
+        ax_market.tick_params(colors="white")
+        st.pyplot(fig_market)
+
+        st.subheader("Latest Market Data")
+        st.dataframe(stock_data.tail(10), use_container_width=True)
 
 with behavior_tab:
     st.subheader("User Segment Summary")
