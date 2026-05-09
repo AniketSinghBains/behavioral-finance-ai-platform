@@ -127,6 +127,18 @@ Model: Isolation Forest
 Purpose: Detect unusual or suspicious transaction behavior.
 
 
+### Global Markets Tracker
+- Tracks global stocks and indices using live market data
+- Supports US stocks, Indian stocks, and major indices
+- Shows latest price, 6-month return, volatility, and price trend
+
+### Investment Behavior Engine
+- Analyzes how much users invest compared to spending
+- Calculates investment rate, average investment, and investing users
+- Compares investment discipline across behavioral segments
+- Flags low investment allocation risk
+
+
 
 \## Business Insights
 
