@@ -293,13 +293,14 @@ def get_stock_data(ticker, period="6mo"):
     return hist
 
 # ---------------- Tabs ----------------
-overview_tab, markets_tab, investment_tab, behavior_tab, ml_tab, anomaly_tab, users_tab = st.tabs([
+overview_tab, markets_tab, investment_tab, behavior_tab, ml_tab, anomaly_tab, chatbot_tab, users_tab = st.tabs([
     "Executive Overview",
     "Global Markets",
     "Investment Behavior",
     "Behavioral Insights",
     "ML Risk Engine",
     "Anomaly Detection",
+    "Finance Chatbot",
     "User Explorer"
 ])
 
@@ -695,6 +696,82 @@ with anomaly_tab:
     ax5.set_title("Anomalies by Category", color="white")
     ax5.tick_params(colors="white", rotation=45)
     st.pyplot(fig5)
+
+with chatbot_tab:
+    st.subheader("AI Financial Behavior Assistant")
+
+    user_question = st.text_input(
+        "Ask a finance behavior question",
+        placeholder="Example: Why are users financially high risk?"
+    )
+
+    if user_question:
+        q = user_question.lower()
+
+        if "high risk" in q or "risk" in q:
+            st.markdown("""
+            <div class="warning-box">
+            <b>Answer:</b><br>
+            Users become high risk when impulse spending, financial stress, late-night spending,
+            and debt-driven payment methods like BNPL or credit cards increase together.
+            </div>
+            """, unsafe_allow_html=True)
+
+        elif "investment" in q or "invest" in q:
+            st.markdown("""
+            <div class="insight-box">
+            <b>Answer:</b><br>
+            Investment behavior is judged by comparing investment allocation against total spending.
+            Low investment rate may indicate users are prioritizing consumption over wealth creation.
+            </div>
+            """, unsafe_allow_html=True)
+
+        elif "late night" in q or "night" in q:
+            st.markdown("""
+            <div class="warning-box">
+            <b>Answer:</b><br>
+            Late-night spending often indicates lower self-control and emotional buying.
+            In this dashboard, late-night behavior is treated as a behavioral risk signal.
+            </div>
+            """, unsafe_allow_html=True)
+
+        elif "bnpl" in q or "credit card" in q:
+            st.markdown("""
+            <div class="warning-box">
+            <b>Answer:</b><br>
+            BNPL and credit card usage can increase impulse behavior because payment pain is delayed.
+            This may create debt dependency if spending is not controlled.
+            </div>
+            """, unsafe_allow_html=True)
+
+        elif "anomaly" in q or "fraud" in q:
+            st.markdown("""
+            <div class="insight-box">
+            <b>Answer:</b><br>
+            Anomaly detection identifies unusual transactions based on amount, timing,
+            mood score, stress level, and impulse behavior.
+            </div>
+            """, unsafe_allow_html=True)
+
+        elif "stock" in q or "market" in q:
+            st.markdown("""
+            <div class="insight-box">
+            <b>Answer:</b><br>
+            The Global Markets tab tracks selected stocks and indices using live market data.
+            It shows latest price, 6-month return, and volatility.
+            </div>
+            """, unsafe_allow_html=True)
+
+        else:
+            st.markdown("""
+            <div class="insight-box">
+            <b>Answer:</b><br>
+            This assistant currently explains behavioral finance signals such as impulse spending,
+            financial stress, investment discipline, stock market tracking, and anomaly detection.
+            </div>
+            """, unsafe_allow_html=True)
+
+
 
 with users_tab:
     st.subheader("User Risk Explorer")
